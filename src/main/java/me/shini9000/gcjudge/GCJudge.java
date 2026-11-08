@@ -2,7 +2,7 @@ package me.shini9000.gcjudge;
 
 import me.shini9000.gcjudge.commands.*;
 import me.shini9000.gcjudge.listener.MenuListener;
-import me.shini9000.gcjudge.sql.MySQL;
+import me.shini9000.gcjudge.sql.SQLite;
 import me.shini9000.gcjudge.sql.SQLCreate;
 import me.shini9000.gcjudge.utils.LPUtils;
 import me.shini9000.gcjudge.utils.PlayerMenuUtils;
@@ -20,7 +20,7 @@ public final class GCJudge extends JavaPlugin implements Listener {
     private static GCJudge plugin;
 
     public SQLCreate data;
-    public MySQL SQL;
+    public SQLite SQL;
     public LuckPerms luckPerms;
 
     private static final HashMap<Player, PlayerMenuUtils> playerMenuUtilsMap = new HashMap<>();
@@ -47,12 +47,12 @@ public final class GCJudge extends JavaPlugin implements Listener {
 
         new LPUtils(this.luckPerms);
 
-        this.SQL = new MySQL();
+        this.SQL = new SQLite(this);
         this.data = new SQLCreate(this);
 
         try {
             SQL.openConnection();
-        } catch (ClassNotFoundException | SQLException e) {
+        } catch (SQLException e) {
             Bukkit.getLogger().info("Database not connected.");
             e.printStackTrace();
         }

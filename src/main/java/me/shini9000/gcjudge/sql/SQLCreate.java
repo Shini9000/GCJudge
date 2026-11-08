@@ -39,7 +39,7 @@ public class SQLCreate {
             UUID uuid = UUID.nameUUIDFromBytes(id.getBytes());
             if (!exists(uuid)){
                 PreparedStatement ps2 = plugin.SQL.getConnection().prepareStatement(
-                        "INSERT IGNORE INTO plotsubmit " + "(NAME,UUID,PLOTID,PLOTTITLE,PLOTLORE,STATUS,COMMENT) VALUES (?,?,?,?,?,?,?)");
+                        "INSERT OR IGNORE INTO plotsubmit " + "(NAME,UUID,PLOTID,PLOTTITLE,PLOTLORE,STATUS,COMMENT) VALUES (?,?,?,?,?,?,?)");
                 ps2.setString(1,player.getName());
                 ps2.setString(2, uuid.toString());
                 ps2.setString(3, id);
@@ -56,12 +56,12 @@ public class SQLCreate {
     }
 
     public boolean exists(UUID uuid){
-        try {
-            PreparedStatement ps = plugin.SQL.getConnection().prepareStatement("SELECT * FROM plotsubmit WHERE UUID=?");
+        try (PreparedStatement ps = plugin.SQL.getConnection().prepareStatement(
+                "SELECT * FROM plotsubmit WHERE UUID=?")) {
             ps.setString(1, uuid.toString());
-            ResultSet results = ps.executeQuery();
-            return results.next();
-
+            try (ResultSet results = ps.executeQuery()) {
+                return results.next();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
