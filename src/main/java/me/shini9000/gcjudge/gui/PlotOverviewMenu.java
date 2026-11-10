@@ -61,6 +61,9 @@ public class PlotOverviewMenu extends Menu {
     @Override
     public void setMenuItems() {
         inventory.setItem(0, utils.getHead(playerMenuUtils.getOwner()));
+        inventory.setItem(1, utils.createGuiItem(Material.ABANDONED_CAMP_MAP,
+                ChatColor.GOLD + "Plot submision help!", 1,
+                ChatColor.DARK_GREEN + "1" + "asd", ChatColor.BLUE + "test"));
         inventory.setItem(2, utils.createGuiItem(Material.ENCHANTED_BOOK,
                 ChatColor.LIGHT_PURPLE + "All submitted plots *debug*", 1));
         inventory.setItem(3, utils.createGuiItem(Material.WRITABLE_BOOK,
