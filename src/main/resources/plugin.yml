@@ -46,12 +46,12 @@ commands:
   plotaccept:
     description: Admin override for accepting a submitted plots
     usage: /plotaccept <gcplotID>
-    permission: gcjudge.admin.plotaccept
+    permission: gcjudge.admin
   plotdeny:
     description: Admin override for denying a submitted plots
     usage: /plotdeny <gcplotID>
-    permission: gcjudge.admin.plotdeny
+    permission: gcjudge.admin
   plotrankup:
     description: Ranks up the player on the track of judge
     usage: /plotrankup <playerName>
-    permission: gcjudge.admin.plotrankup
+    permission: gcjudge.admin

@@ -45,13 +45,12 @@ public class JudgeMenu extends Menu {
         if (e.getCurrentItem() == null) return;
 
         switch (e.getCurrentItem().getType()) {
-            case WRITABLE_BOOK -> { new SubmittedMenu(playerMenuUtils).open(); break;}
+            case WRITABLE_BOOK -> new SubmittedMenu(playerMenuUtils).open();
             case PAPER -> {
                 if(PlotUtils.getId(p) != null && exists)
                     new JudgePlotInfoMenu(playerMenuUtils).open();
                 else
                     p.sendMessage(ChatColor.RED + "You must stand on a submitted plot");
-                break;
             }
         }
 

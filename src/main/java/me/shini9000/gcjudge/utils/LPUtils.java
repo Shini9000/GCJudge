@@ -65,7 +65,7 @@ public class LPUtils {
     }
 
     public List<String> creativeGroups(){
-        List<String> creativeGroupsList = Arrays.asList("default", "rank1", "rank2", "rank3", "rank4", "rank5", "rank6");
+        List<String> creativeGroupsList = Arrays.asList("default", "boilerkeeper", "blacksmith", "hatmaker", "guardian", "shishigami");
         return creativeGroupsList;
     }
 }
