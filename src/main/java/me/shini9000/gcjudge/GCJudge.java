@@ -14,11 +14,17 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
+import static me.shini9000.gcjudge.utils.PlayerMenuUtils.playerMenuUtilityMap;
 
 public final class GCJudge extends JavaPlugin implements Listener {
 
     private static GCJudge plugin;
-
+    private ExecutorService dbExecutor;
+    public ExecutorService db() { return dbExecutor; }
     public SQLCreate data;
     public SQLite SQL;
     public LuckPerms luckPerms;
@@ -27,6 +33,9 @@ public final class GCJudge extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
+        getServer().getPluginManager().registerEvents(new me.shini9000.gcjudge.listener.QuitListener(), this);
+        dbExecutor = Executors.newSingleThreadExecutor(r -> new Thread(r, "GCJudge-DB"));
+
         Bukkit.getConsoleSender().sendMessage("Enabling plugin: "
                 + getDescription().getName()
                 + " Version: "
@@ -71,6 +80,9 @@ public final class GCJudge extends JavaPlugin implements Listener {
 
     @Override
     public void onDisable() {
+        dbExecutor.shutdown();
+        try { dbExecutor.awaitTermination(5, TimeUnit.SECONDS); } catch (InterruptedException ignored) {}
+
         Bukkit.getConsoleSender().sendMessage(getDescription().getName());
         try {
             SQL.closeConnection();
@@ -101,5 +113,6 @@ public final class GCJudge extends JavaPlugin implements Listener {
     public static GCJudge getPlugin() {
         return plugin;
     }
+    public static void removePlayerMenuUtils(Player p) { playerMenuUtilityMap.remove(p); }
 
 }

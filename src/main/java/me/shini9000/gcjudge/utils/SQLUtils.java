@@ -10,6 +10,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
 
 public class SQLUtils {
 
@@ -206,5 +208,18 @@ public class SQLUtils {
             e.printStackTrace();
         }
         return "n/a";
+    }
+
+    private static <T> CompletableFuture<T> async(Supplier<T> work) {
+        return CompletableFuture.supplyAsync(work, GCJudge.getInstance().db());
+    }
+
+    public CompletableFuture<String> getPlotStatusAsync(String plotId) {
+        return async(() -> getPlotStatus(plotId));
+    }
+    public CompletableFuture<String> getPlotLoreAsync(String plotId)  { return async(() -> getPlotLore(plotId)); }
+    public CompletableFuture<String> getPlotTitleAsync(String plotId) { return async(() -> getPlotTitle(plotId)); }
+    public CompletableFuture<Void> addPlotLoreAsync(String plotId, String lore) {
+        return CompletableFuture.runAsync(() -> addPlotLore(plotId, lore), GCJudge.getInstance().db());
     }
 }
